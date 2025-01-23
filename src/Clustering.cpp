@@ -78,7 +78,7 @@ Mat Clustering::kmeans1D(Mat I, int K, int channel)
     do{
         for(int k=0; k<K; k++){
           centroids_t1[k]=0;
-          nb[k]=0;
+          nb[k]=0;  
         }
 
         /*===============A COMPLETER =============================*/

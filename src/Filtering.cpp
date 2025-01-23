@@ -26,22 +26,30 @@ Gaussian Kernel
 width of the kernel given by W
 sigma =W/2
 ---------------------------------------------------------*/
-Mat  Filtering::GaussKernel ()
-{
-	Mat g=Mat::zeros(W,W, CV_32F);
-	int sigma= W/2;
-    float A = 1. /(2*PI*sigma*sigma);
-    /*===============A COMPLETER =============================*/
+/* -------------------------------------------------------
+Gaussian Kernel
+width of the kernel given by W
+sigma = W/2
+---------------------------------------------------------*/
+Mat Filtering::GaussKernel() {
+	Mat g = Mat::zeros(W, W, CV_32F);
+	int sigma = W / 2;
+	float A = 1.0 / (2 * PI * sigma * sigma);
 
+	// Calculate Gaussian kernel
+	for (int i = 0; i < W; i++) {
+		for (int j = 0; j < W; j++) {
+			int x = i - W / 2;
+			int y = j - W / 2;
+			g.at<float>(i, j) = A * exp(-(x * x + y * y) / (2.0 * sigma * sigma));
+		}
+	}
 
-    /*===============FIN A COMPLETER =============================*/
+	// Normalize the kernel to ensure the sum of all values is 1
+	float sum = cv::sum(g)[0];
+	g /= sum;
 
-//	for(int i=0; i<W; i++)
-//		for(int j=0; j<W; j++)
-//            g.at<float>(i,j)/=c;
-
-
-	return(g);
+	return g;
 }
 
 /* -------------------------------------------------------
@@ -104,25 +112,37 @@ void  Filtering::SobelKernel (Mat &Kx, Mat &Ky)
     Ky.at<float>(1,2) = b;
     Ky.at<float>(2,2) = a;
 
-}
 
- /* -------------------------------------------------------
-Convolve I with kernel K
+}
 
----------------------------------------------------------*/
 Mat Filtering::convolve(Mat I, Mat K)
 {
-    Mat J=Mat::zeros(I.rows, I.cols, CV_32F);
+	Mat J = Mat::zeros(I.rows, I.cols, CV_32F);
 
-    int w = K.rows/2;
-    float res;
-    /*===============A COMPLETER =============================*/
+	int w = K.rows / 2;
 
+	for (int i = w; i < I.rows - w; i++) {
+		for (int j = w; j < I.cols - w; j++) {
+			float res = 0.0;
 
-    /*===============FIN A COMPLETER =============================*/
+			for (int u = -w; u <= w; u++) {
+				for (int v = -w; v <= w; v++) {
+					if (I.type() == CV_8U) {
+						res += I.at<uchar>(i + u, j + v) *
+							K.at<float>(w + u, w + v);
+					}
+					else if (I.type() == CV_32F) {
+						res += I.at<float>(i + u, j + v) *
+							K.at<float>(w + u, w + v);
+					}
+				}
+			}
 
+			J.at<float>(i, j) = res;
+		}
+	}
 
-return(J);
+	return J;
 }
 
 
@@ -133,8 +153,8 @@ Norm Gradient
 ---------------------------------------------------------*/
 void Filtering::gradientNorm(Mat Gx, Mat Gy, Mat &Norm, Mat &Angle )
 {
-
-	double u, v, a;
+	
+	double u, v, a=0.25;
 	Norm=Mat::zeros(Gx.rows, Gx.cols, CV_8U);
 	Angle=Mat::zeros(Gx.rows, Gx.cols, CV_8U);
 	for(int i=1; i<Gx.rows-1; i++){
