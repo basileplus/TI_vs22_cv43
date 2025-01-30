@@ -182,40 +182,87 @@ Detection :
 - rectangle
 - hexagones
 ***********************************************/
-#define N_MIN 50 // limite de taille
-#define SEUIL_VAR 2
-#define SEUIL_VAR2 25
-void Shape::analysis ( )
+#define N_MIN 50 // Seuil de taille minimale pour considérer une région
+#define SEUIL_VAR 2.0 // Seuil de variance pour identifier un cercle
+#define SEUIL_PEAKS_TRI_MIN 3 // Seuil minimum de pics pour un triangle
+#define SEUIL_PEAKS_TRI_MAX 5 // Seuil maximum de pics pour un triangle
+#define SEUIL_PEAKS_HEXA_MIN 5 // Seuil minimum de pics pour un hexagone
+#define SEUIL_PEAKS_HEXA_MAX 8 // Seuil maximum de pics pour un hexagone
+#define WINDOW_SIZE 5 // Taille de la fenêtre pour la moyenne glissante
+void Shape::analysis()
 {
+    int nrond = 0, ntri = 0, nocto = 0;
 
-     // largeur de l'affichage = size de v
-    int n   =  t_sig.size();
-    vector<int> v;
-    float moy =0;
-    float var =0;
-    int imax;
-    int  nrond=0;
-    int ntri=0;
+    auto it = t_sig.begin();
+    for (size_t k = 0; k < t_sig.size(); ++k, ++it) {
+        int region_number = k + 1; // Les régions sont indexées à partir de 1
 
-    int ncarre =0;
-    int nrect=0;
-    int nocto=0;
+        // Ignorer les régions trop petites
+        if (t_area[region_number] < N_MIN)
+            continue;
 
-    vector<float> compacite(n);
-    for(int i =0; i<n; i++){
-        v = t_sig.back();
-        t_sig.pop_back();
+        const auto& signature = *it;
+        if (signature.empty())
+            continue;
 
+        // Calcul de la moyenne et variance de la signature
+        double sum = 0.0;
+        for (int d : signature)
+            sum += d;
+        double moy = sum / signature.size();
+
+        double var = 0.0;
+        for (int d : signature)
+            var += (d - moy) * (d - moy);
+        var /= signature.size();
+
+        // Compacité (Périmètre² / (4 * π * Aire))
+        double compacite = (t_perim[region_number] * t_perim[region_number]) / (4 * CV_PI * t_area[region_number]);
+
+        // Détection des pics dans la signature avec moyenne glissante
+        int peaks = 0;
+        std::vector<double> smoothed_signature(signature.size(), 0.0);
+
+        // Calcul de la moyenne glissante
+        for (size_t i = 0; i < signature.size(); ++i) {
+            int start = std::max(static_cast<int>(i) - WINDOW_SIZE / 2, 0);
+            int end = std::min(static_cast<int>(i) + WINDOW_SIZE / 2, static_cast<int>(signature.size()) - 1);
+            double sum = 0.0;
+            for (int j = start; j <= end; ++j) {
+                sum += signature[j];
+            }
+            smoothed_signature[i] = sum / (end - start + 1);
+        }
+
+        // Détection des pics dans la signature lissée
+        for (size_t i = 1; i < smoothed_signature.size() - 1; ++i) {
+            if (smoothed_signature[i] > smoothed_signature[i - 1] && smoothed_signature[i] > smoothed_signature[i + 1]) {
+                peaks++;
+            }
+        }
+
+        // Classification des formes
+        if (var < SEUIL_VAR) {
+            // Cercle : variance faible et compacité proche de 1
+            nrond++;
+        }
+        else if (peaks >= SEUIL_PEAKS_TRI_MIN && peaks <= SEUIL_PEAKS_TRI_MAX ) {
+            // Triangle : 3 à 5 pics et compacité élevée
+            ntri++;
+        }
+        else if (peaks >= SEUIL_PEAKS_HEXA_MIN && peaks <= SEUIL_PEAKS_HEXA_MAX) {
+            // Hexagone : 5 à 8 pics et compacité modérée
+            nocto++;
+        }
     }
 
-
-cout << "---------------------"<< endl;
-cout <<"RONDS : " << nrond << endl;
-cout << "TRIANGLES : " << ntri <<  endl;
-cout <<  "OCTOGONES : " << nocto << endl;
-cout << "---------------------"<< endl;
-
+    cout << "---------------------" << endl;
+    cout << "CERCLES : " << nrond << endl;
+    cout << "TRIANGLES : " << ntri << endl;
+    cout << "HEXAGONES : " << nocto << endl;
+    cout << "---------------------" << endl;
 }
+
 
 
 

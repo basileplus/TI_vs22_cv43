@@ -49,21 +49,38 @@ int main( int argc, char** argv )
     bool display = false;
 
     InitWindows(400, 200);
-	// Loop on the images
-	for(int i=config.n0; i<=config.nend; i++){
-       cout << "Image " << i << endl;
+    // Loop on the images
+    for (int i = config.n0; i <= config.nend; i++) {
+        cout << "Image " << i << endl;
 
         Color c(config, i, im, true);
         InitWindows(im.cols, im.rows);
 
-        imshow("Image initiale", im);
-        Mat im_c =c.convert(im, config.colorspace, display);
-        imshow("Image convertie", im_c);
 
-     // a completer
+        Mat im_c = c.convert(im, config.colorspace, display);
+        imshow("Image initiale", im_c);
+
+
+        // Appliquer un flou gaussien à l'image
+        GaussianBlur(im_c, im_c, Size(5, 5), 0);
+        imshow("Image floue", im_c);
+
+
+        Clustering cl;
+        im_b = cl.kmeans1D(im_c, config.K, 0);
+        //im_b = select_val(im_b, 2);
+        Display("Image binaire", im_b);
+
+        Segmentation s(im);
+
+        Mat im_r = s.regions(im_b);
+        s.Display("Image Segmentee", im_r);
+        
+
+
         waitKey(0);
 
-}
+    }
 	}
 
 

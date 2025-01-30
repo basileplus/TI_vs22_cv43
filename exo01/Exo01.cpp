@@ -109,7 +109,6 @@ int main()
 	config.Load("../config_exo1a.cfg");
     config.ReadConfigIm();    // Initialise
 
-
     Mat RGB;
     bool display = false;
     for(int i = config.n0; i<= config.nend; i++){
