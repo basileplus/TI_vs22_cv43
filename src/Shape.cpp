@@ -39,10 +39,10 @@ void Shape::compute(const Segmentation& s)
         // processing of all regions
         for(int k=1; k<=s.nr; k++) {
             t_area[k]=0;//aire
-            t_limits.at<int>(k,0)= s.rows; //row min
-            t_limits.at<int>(k,1)= s.cols; // col min
-            t_limits.at<int>(k,2)= 0; //row max
-            t_limits.at<int>(k,3)= 0; //col max
+            t_limits.at<double>(k,0)= s.rows; //row min
+            t_limits.at<double>(k,1)= s.cols; // col min
+            t_limits.at<double>(k,2)= 0; //row max
+            t_limits.at<double>(k,3)= 0; //col max
 
             for(int i=0; i<s.rows; i++)
                 for(int j=0; j<s.cols; j++){
@@ -52,10 +52,10 @@ void Shape::compute(const Segmentation& s)
                         //aire
                         t_area[k] ++;
                         //boite englobante
-                        t_limits.at<int>(k,0)= testMin(i, t_limits.at<int>(k,0));
-                        t_limits.at<int>(k,1)= testMin(j, t_limits.at<int>(k,1));
-                        t_limits.at<int>(k,2)= testMax(i, t_limits.at<int>(k,2));
-                        t_limits.at<int>(k,3)= testMax(j, t_limits.at<int>(k,3));
+                        t_limits.at<double>(k,0)= testMin(i, t_limits.at<double>(k,0));
+                        t_limits.at<double>(k,1)= testMin(j, t_limits.at<double>(k,1));
+                        t_limits.at<double>(k,2)= testMax(i, t_limits.at<double>(k,2));
+                        t_limits.at<double>(k,3)= testMax(j, t_limits.at<double>(k,3));
 
                        }
                         //else r.at<uchar>(i,j)=0;
@@ -101,8 +101,8 @@ r.release();
                 cout << "--------------------------------------------------------" << endl;
 
                 cout << "Region n° " << k << " de taille " << t_area[k] << " px" << " de perimetre " << t_perim[k] << endl;
-                cout << " x =[" << t_limits.at<int>(k,0) <<", " << t_limits.at<int>(k,2) <<
-                                "], y= [" << t_limits.at<int>(k,1) <<", " << t_limits.at<int>(k,3) << "] " <<   " xo,yo " << t_center.at<int>(k, 0) << " " << t_center.at<int>(k, 1) << endl;
+                cout << " x =[" << t_limits.at<double>(k,0) <<", " << t_limits.at<double>(k,2) <<
+                                "], y= [" << t_limits.at<double>(k,1) <<", " << t_limits.at<double>(k,3) << "] " <<   " xo,yo " << t_center.at<int>(k, 0) << " " << t_center.at<int>(k, 1) << endl;
                 cout << "Moments centres :" << "mu02 = " << t_mom[k].mu20 <<   "; mu20 = " << t_mom[k].mu02 <<   "; mu11 = " << t_mom[k].mu11 <<  endl;
                 cout << "mu02/mu20 = " << t_mom[k].mu20/ t_mom[k].mu02 <<  endl;
                 cout << "--------------------------------------------------------" << endl;
@@ -170,15 +170,6 @@ void Shape::signature(const Mat& I, Point2d c )
         t_sig.push_back(s);
        Display(s, "7-Signature ");
 
-}
-/*************************************
-Codage de Freeman
-Part d'un point C et parcourt l'image binaire I contenant un contour
-Renvoie un vecteur d'entiers correspondant au code de Freemans
-
-**************************************/
-std::list< vector<int> >  Shape::Freemancode(const Mat& I, Point2d c )
-{
 }
 
 

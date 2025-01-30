@@ -35,7 +35,7 @@ Mat Segmentation::etiquetage_cc(const Mat& im)
             if((im.at<uchar>(i,j)!=0) and (res.at<uchar>(i,j)==0)) {
                 n++;
                 I.at<uchar>(i,j)=1;
-                res+=m.reconstruction(I, im);
+				res += m.reconstruction(I, im); // reconstruction geodesique
                 I.at<uchar>(i,j)=0;
                 //break;
         }
@@ -78,7 +78,22 @@ Mat Segmentation::regions(const Mat& im)
                         L.pop_back();
                        // cout << "size : " << L.size() << endl;
                            /*===============A COMPLETER =============================*/
-
+                        // Check all four neighboring pixels (4-connectivity)
+                        int dx[] = { -1, 1, 0, 0 };
+                        int dy[] = { 0, 0, -1, 1 };
+                        for (int k = 0; k < 4; k++) {
+                            int nx = q.x + dx[k];
+                            int ny = q.y + dy[k];
+                            // Check if the neighbor is within image boundaries
+                            if (nx >= 0 && nx < im.cols && ny >= 0 && ny < im.rows) {
+                                // Check if the pixel is unprocessed and part of the foreground
+                                if (ToDo.at<uchar>(ny, nx) != 0 && im.at<uchar>(ny, nx) != 0) {
+                                    L.push_back(Point2d(nx, ny));
+                                    ToDo.at<uchar>(ny, nx) = 0;
+                                    res.at<int>(ny, nx) = e;
+                                }
+                            }
+                        }
 
                                 /*===============FIN A COMPLETER =============================*/
 

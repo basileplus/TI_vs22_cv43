@@ -57,6 +57,7 @@ int main( int argc, char** argv )
         Gy = flt.convolve(I, Ky);
         flt.gradientNorm(Gx, Gy, In, Itheta );
 
+
         Display("2-Sobel Gx", Gx);
         Display("3-Sobel Gy", Gy);
 
