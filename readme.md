@@ -1,27 +1,25 @@
 
-![](documents\attachments\documents\attachments\CR_TP-20250108161737976.png)
-
 # Exercice 1
 
 L'image initiale est 
 
-![](documents\attachments\CR_TP-20250108161921113.png)
+![](/documents/attachments/CR_TP-20250108161921113.png)
 
 On commence par modifier le code pour afficher l'histogramme 1D
-![](documents\attachments\CR_TP-20250108161509290.png)
+![](documents/attachments/CR_TP-20250108161509290.png)
 
 Ensuite on modifie le fichier de config de l'exo1 en ``.cfg``. On peut modifier l'espace des couleurs dans ce fichier en changeant par exemple ``'RGB'`` par ``'YUV'``
 **Capture images modifiées avec l'espace couleur**
 ### *Qu'est ce que l'espace HSV ?*
 L'espace **HSV** (Hue, Saturation, Value) est un modèle de représentation des couleurs basé sur la perception humaine.
 
-![](documents\attachments\CR_TP-20250108161904627.png)
+![](documents/attachments/CR_TP-20250108161904627.png)
 
 - **H (Hue)** : Teinte, indique la couleur (0° = rouge, 120° = vert, 240° = bleu).
 - **S (Saturation)** : Saturation, représente l'intensité ou la pureté de la couleur (0 = gris, 1 = couleur vive).
 - **V (Value)** : Valeur, indique la luminosité (0 = noir, 1 = couleur maximale).
 
-![](documents\attachments\CR_TP-20250108161737976.png)
+![](documents/attachments/CR_TP-20250108161737976.png)
 
 Il est souvent utilisé en traitement d'image car il facilite la séparation de la couleur (teinte) et de l'intensité lumineuse.
 
@@ -33,7 +31,7 @@ L'espace **Lab** (CIE 1976) est un modèle de couleur basé sur la perception hu
 - **a** : Composant allant de vert (-) à rouge (+).
 - **b** : Composant allant de bleu (-) à jaune (+).
 
-![](documents\attachments\CR_TP-20250108161821742.png)
+![](documents/attachments/CR_TP-20250108161821742.png)
 
 Il est utilisé en traitement d'image car il sépare la luminance (L) et la chrominance (a, b), ce qui le rend plus adapté à des opérations de manipulation des couleurs.
 
@@ -59,11 +57,11 @@ Mat Color::HistoStretching(Mat It)
 
 Pour les images bruitées ou contenant peu d'information (variétés de couleurs), les modifications d’histogrammes risquent d’introduire du bruit en créant des variations artificielles de niveaux de gris.
 
-![](documents\attachments\CR_TP-20250108163345175.png)
+![](documents/attachments/CR_TP-20250108163345175.png)
 
 ## Egalisation d'histogramme
 
-![](documents\attachments\CR_TP-20250108163508349.png)
+![](documents/attachments/CR_TP-20250108163508349.png)
 
 L'égalisation d'histogramme vise à obtenir un histogramme où toutes les valeurs de gris sont equiprobables. L'image semble surexposée avec cette modification de l'histogramme. Toutefois on est moins sensible au bruit qu'avec un étirement.
 On vise un histogramme cumulé qui ressemble à une droite avec cette méthods
@@ -71,21 +69,21 @@ On vise un histogramme cumulé qui ressemble à une droite avec cette méthods
 
 Avec ces transformations, plutôt que de viser un histogramme cumulé linéaire nous allons viser un histogramme cumulé de forme logarithmique ou exponentielle. Ainsi augmente le contraste pour les hauts niveau de gris ou les faibles niveaux de gris.
 
-![](documents\attachments\CR_TP-20250108164957993.png)
+![](documents/attachments/CR_TP-20250108164957993.png)
 
 # Exercice 3 : représentation fréquentielle
 
 On peut définir la transformée de Fourier d'une image. 
 
-![](documents\attachments\CR_TP-20250108165327762.png)
+![](documents/attachments/CR_TP-20250108165327762.png)
 
 Ainsi les axes u et v correspondent aux variables fréquentielles et l’origine (0, 0) (composante continue) est placée au centre de cette représentation. L’axe horizontal u (resp. vertical v) est associé aux variations d’intensité lumineuse dans l’image le long des lignes (resp. des colonnes).
 
-![](documents\attachments\CR_TP-20250108165416835.png)
+![](documents/attachments/CR_TP-20250108165416835.png)
 
 on constate que la composante continue (en (0,0)) est plus forte que les autres. On peut aussi remarquer que toutes les fréquences semblent présentent dans l'image (pas de zone noire). A partir de cette transformée de Fourier il est possible de filtrer l'image pour ne garder que les composantes basses fréquences ou hautes fréquences
 
-![](documents\attachments\CR_TP-20250108165610423.png)
+![](documents/attachments/CR_TP-20250108165610423.png)
 
 On peut jouer sur la fréquence de coupure de ces filtres numériques pour laisser plus ou moins de hautes ou basses fréquences.
 
@@ -119,7 +117,7 @@ Dans l'exemple suivant on se concentre sur le channel rouge afin de détecter le
 
 Si on travail dans l'espace de couleur ``RGB`` on obtient le clustering suivant :
 
-![](documents\attachments\CR_TP-20250108172314211.png)
+![](documents/attachments/CR_TP-20250108172314211.png)
 
 La méthode peine à détecter le panneau. Lorsque la configuration indique "RGB" k'ilage est gardée telle quel. Lorsqu'on modifie le fichier de configuration pour travailler dans l'espace "rgb" on normalise l'intensité de chaque composante rouge, vert, bleu par la luminance (somme des intensité rouge, verte, bleue). Ce choix possède à la fois des qualités et des défauts.
 
@@ -134,21 +132,21 @@ La méthode peine à détecter le panneau. Lorsque la configuration indique "RGB
 - Pour segmenter un objet dont la couleur dénote sur l'image, alors l'espace "rgb" est à privilégier. Il permettra de rendre uniforme toutes les nuances de rouges du panneau. En revanche on perd des détails sur les ombres et les contour des objets. Si la on cherche à faire ressortir les couleur vives cet espace couleur est à privilégier. En revanche si on veut identifier les contours d'un objet dont la couleur n'est pas très différente du fond, alors travailler en RGB peut être plus intéressant.
 
 
-![](documents\attachments\CR_TP-20250108171624370.png)
+![](documents/attachments/CR_TP-20250108171624370.png)
 
 On fait un clustering sur 3 classes (3 niveaux de gris sur l'image la plus à droite) en regardant un seul canal (dans notre cas le canal rouge). On peut aussi modifier les paramètres pour ne faire le clustering que sur le canal vert, ou bleu. Les résultats sont les suivants :
 
-![](documents\attachments\CR_TP-20250121141515434.png)
+![](documents/attachments/CR_TP-20250121141515434.png)
 Canal vert
-![](documents\attachments\CR_TP-20250121141549184.png)
+![](documents/attachments/CR_TP-20250121141549184.png)
 Canal bleu
 
 On constate que le clustering est plus efficace pour détecter le panneau rouge lorsque le clustering est effecuté sur la couleur rouge pour détecter le panneau rouge.
 
 On peut aussi faire varier le nombre de classes $K$
-![](documents\attachments\CR_TP-20250121141920093.png)
+![](documents/attachments/CR_TP-20250121141920093.png)
 K = 2
-![](documents\attachments\CR_TP-20250121141947477.png)
+![](documents/attachments/CR_TP-20250121141947477.png)
 K=5
 
 # Exercice 6 
@@ -199,9 +197,9 @@ Mat Morpho::erode(const Mat& src, const Mat& es, int N)
 ```
 
 
-![](documents\attachments\CR_TP-20250121151810754.png)
+![](documents/attachments/CR_TP-20250121151810754.png)
 
-![](documents\attachments\CR_TP-20250121151830757.png)
+![](documents/attachments/CR_TP-20250121151830757.png)
 
 On complète les fonctions suivantes :
 - **`closing`** : Effectue une fermeture morphologique (dilatation suivie d'érosion) pour combler les petits trous et lisser les contours des objets clairs dans une image binaire.
@@ -211,18 +209,18 @@ On complète les fonctions suivantes :
 - **`zeros`** : Détecte les passages par zéro dans l'image (changement de signe entre pixels adjacents), souvent utilisé pour localiser des contours ou des variations rapides.
 
 On obtient les résultats suivants :
-![](documents\attachments\CR_TP-20250121153010565.png)
+![](documents/attachments/CR_TP-20250121153010565.png)
 
 La reconstruction géodésique permet de partir d'un image de marqueurs et de reconstruire les détails d'une image source
 
-![](documents\attachments\CR_TP-20250121153919530.png)
+![](documents/attachments/CR_TP-20250121153919530.png)
 (source : [Université de liège - Marc Van Droogenbroeck](https://www.telecom.ulg.ac.be/teaching/notes/totali/elen016/node126_tf.html))
 
 # Exercice 7 : détection de contours
 
 On recode les fonctions de convolutions nécessaires pour la détection de contour
 
-![](documents\attachments\CR_TP-20250121173715238.png)
+![](documents/attachments/CR_TP-20250121173715238.png)
 
 En particulier
 
@@ -277,17 +275,17 @@ On part d'un pixel "germe" de valeur 1. On va ajouter à la pile de pixels à tr
 
 On obtient les résultats suivants :
 
-![](documents\attachments\CR_TP-20250130143600735.png)
-![](documents\attachments\CR_TP-20250130143625443.png)
+![](documents/attachments/CR_TP-20250130143600735.png)
+![](documents/attachments/CR_TP-20250130143625443.png)
 On observe sur cette image que certains pixels de bruit sont restés sur l'image binaire, ainsi on a détecté pour chacun d'eux une nouvelle composante connexe. Il faut donc faire attention à ce que l'image binaire ne soit pas bruité, on pourrait par exemple la passer à travers un filtre gaussien. On pourrait aussi appliquer un seuil sur l'image segmentée en imposant que chaque composante connexe doit avoir un nombre de pixel $N_{i}>\text{seuil}$ (pour éliminer les pixels isolés)
 
 # Exercice 9
 
-![](documents\attachments\CR_TP-20250130151244649.png)
+![](documents/attachments/CR_TP-20250130151244649.png)
 
-![](documents\attachments\CR_TP-20250130151322666.png)
+![](documents/attachments/CR_TP-20250130151322666.png)
 
-![](documents\attachments\CR_TP-20250130151407873.png)
+![](documents/attachments/CR_TP-20250130151407873.png)
 
 
 ### **Détection des cercles et des formes géométriques : Méthodes et limitations**
@@ -324,9 +322,9 @@ Deux approches peuvent être utilisées :
 
 Toutefois cette méthode ne permet pas de détecter les panneaux lorsque plusieurs formes sont présentes, comme c'est le cas pour les photos suivantes :
 
-![](documents\attachments\CR_TP-20250130151816726.png)
+![](documents/attachments/CR_TP-20250130151816726.png)
 
-![](documents\attachments\CR_TP-20250130152152679.png)
+![](documents/attachments/CR_TP-20250130152152679.png)
 #### **5. Problèmes rencontrés dans l’analyse du contour**
 
 Certaines méthodes ne fonctionnent pas systématiquement en raison de plusieurs facteurs :
@@ -440,63 +438,63 @@ void Shape::analysis()
 
 L'algorithme proposé parvient maintenant bien à détecter les formes présentes dans l'image, après un bon réglage des paramètres. Pour les images complexes comme la suivante, on a toujours du mal à obtenir le bon nombre de formes 
 
-![](documents\attachments\CR_TP-20250130152152679.png)
+![](documents/attachments/CR_TP-20250130152152679.png)
 
 # Exercice 10
 
 On obtient les images suivantes. On commence ar judicieusement choisir le bon espace couleur pour détecter les toits en tuile.
 
-![](documents\attachments\CR_TP-20250130174548649.png)
+![](documents/attachments/CR_TP-20250130174548649.png)
 RGB
 
 On réutilise le code de l'exercice 1 pour analyser les couleurs des images de toit.
 
-![](documents\attachments\CR_TP-20250130175604910.png)
+![](documents/attachments/CR_TP-20250130175604910.png)
 
 On constate que le channel 2 de l'espace Lab semble particulièrement pertinent pour identifier les toits. On observe maintenant les distributions de l'histogramme pour essayer de définir un seuillage de l'histogramme qui permette d'isoler les toits.
 
-![](documents\attachments\CR_TP-20250130175920839.png)
+![](documents/attachments/CR_TP-20250130175920839.png)
 
 Nous allons donc travailler sur le channel 2 de l'espace Lab pour la détection de batiments. Maintenant que nous avons identifier l'espace de couleur pertinent ainsi que le channel à considérer, nous allons pouvoir modifier l'histogramme, comme dans l'exercice 2 afin d'isoler les composantes de couleurs qui nous intéressent
 
-![](documents\attachments\CR_TP-20250131082119401.png)
-![](documents\attachments\CR_TP-20250131082237400.png)
+![](documents/attachments/CR_TP-20250131082119401.png)
+![](documents/attachments/CR_TP-20250131082237400.png)
 Un simple étirement d'histogramme semble suffisant, une transformation plus complexe ne semble pas êre bénéfique pour notre étude. Ainsi nous allons effectuer un étirement d'histogramme sur l'image à traiter
 
 La méthode fonctionne très bien pour la plupart des images, toutefois on constate que pour certaines le résultat n'est pas bon du tout, par exemple pour l'image suivante
-![](documents\attachments\CR_TP-20250131084123180.png)
+![](documents/attachments/CR_TP-20250131084123180.png)
 Etalement + Clustering + Segmentation pour $K=2$
 L'étirement d'histogramme semble bien aider à isoler les batiments, en revanche lors de la segmentation et du clustering l'analyse n'est pas bonne, alors même qu'elle fonctionne très bien pour d'autres images, par exemple
-![](documents\attachments\CR_TP-20250131084259515.png)
+![](documents/attachments/CR_TP-20250131084259515.png)
 Etalement + Clustering + Segmentation pour $K=2$
 
 Le problème est le suivant : les pixels du sol sont trop foncés et sont détectés comme appartenant à la même classe que les toits lors du clustering. Jusqu'à maintenant le nombre de cluster était fixé à 2 et cela donnait un résultat convenable. En augmentant le nombre de clusters à 3 on va permettre à l'algorithme de définir une classe intermédiaire, entre le clair du sol et le foncé des toits.
-![](documents\attachments\CR_TP-20250131084834784.png)
+![](documents/attachments/CR_TP-20250131084834784.png)
 
 On se concentre maintenant sur une nouvelle difficulté observée sur l'image suivante :
 
-![](documents\attachments\CR_TP-20250131085001374.png)
+![](documents/attachments/CR_TP-20250131085001374.png)
 
 Entre les maisons on détecte des pixels de même intensité que les toits des maisons. Toutefois ces pixels sont plus fins et situés au milieu de zones claires (le sol). Une première approche peut donc être d'appliquer un flou gaussien. Cela permettra de "diluer" les pixels sombres mais situés au milieu de zones claires, et on renforcera par la même occasion la robustesse de l'algorithme au bruit de l'image. On constate que le flou aide grandement à réduire l'impacte des petites structures
 
-![](documents\attachments\CR_TP-20250131085652802.png)
+![](documents/attachments/CR_TP-20250131085652802.png)
 Après application d'un flou gaussien avec un kernel de taille $11 \times 11$
 
 En revanche quelques éléments sont toujours apparents. Deux solutions peuvent aider à cela : il est possible d'augmenter encore la taille du noyau, au risque de ne plus détecter de batîments trop petits. Une autre façon d'améliorer la détection est d'appliquer le flou après égalisation d'histogramme et non avant comme c'est le cas pour la figure précédente. Ainsi le filtrage de l'image sera facilité puisque les différentes composantes seront plus isolées et plus facilement séparables
 
 En augmentant l'intensité du flitrage on obtient un résultat satisfaisant :
-![](documents\attachments\CR_TP-20250131090955348.png)
+![](documents/attachments/CR_TP-20250131090955348.png)
 
 En excluant les classes qui ne contiennent pas assez de pixels on saura discerner les maisons du bruit/barrières. Maintenant un nouveau problème se pose du fait du filtrage : lorsque les batiments sont trop proches les uns des autres, le filtre encourage à ne détecter qu'un bâtiment au lieu de trois, comme c'est le cas sur la photo suivante
-![](documents\attachments\CR_TP-20250131091247324.png)
+![](documents/attachments/CR_TP-20250131091247324.png)
 
 Une solution est d'utiliser un filtrage qui conserve les contours, par exemple une méthode de diffusion anisotropique.
 
 Finalement en assemblant toutes ces méthodes de traitement, on parvient à correctement détecter tous les bâtiments dont les toits sont en tuiles 
 
-![](documents\attachments\CR_TP-20250131104023187.png)
-![](documents\attachments\CR_TP-20250131104116314.png)
-![](documents\attachments\CR_TP-20250131104232339.png)
+![](documents/attachments/CR_TP-20250131104023187.png)
+![](documents/attachments/CR_TP-20250131104116314.png)
+![](documents/attachments/CR_TP-20250131104232339.png)
 On notera toutefois que la méthode utilisée fonctionne bien pour détecter les toits en tuiles, par exemple pour l'image suivante on ne détecte pas correctement les toits
 
-![](documents\attachments\CR_TP-20250131104150538.png)
+![](documents/attachments/CR_TP-20250131104150538.png)
