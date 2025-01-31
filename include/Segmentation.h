@@ -30,5 +30,4 @@ class Segmentation
     protected:
     private:
 };
-
 #endif // SEGMENTATION_H

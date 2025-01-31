@@ -94,27 +94,21 @@ Mat Segmentation::regions(const Mat& im)
                                 }
                             }
                         }
-
                                 /*===============FIN A COMPLETER =============================*/
-
-
                     }while(L.size()>0);
-
                     e++;
             }
     }
     }
     nr=e-1;
-
     cout << "Nb regions : " << e << endl;
-
     res.copyTo(Iregions);
     ToDo.release();
-
     cout << "Fin regions " << endl;
     return(res);
-
 }
+
+
 /**
 select pixels of label k
 **/
